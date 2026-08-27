@@ -24,17 +24,12 @@ class SimCfg:
     finger_height = 0.064
     center_x = 0.10
     center_y = 0.10
-    # MATERIAL: sim2real-calibrated 2026-07-30 by 5-param Bayesian system-ID
-    # against the 1.5x-sphere close_pull rig (rank 5, whole close->pull curve):
-    # E=2.05 MPa, mu=0.618, damping ratio x2.806 (folded into REF_DAMPING),
-    # d_hat=1.04 mm, epsv=7.19e-4. Fit RMSE 1.10 N, pull-off 5.45 N vs rig 5.89 N.
-    # CAVEATS (verification 2026-07-30): the fit is a DEGENERATE RIDGE — damp and
-    # d_hat are essentially unidentified and E sits in a shallow basin ~1% above
-    # its lower bound; only mu(~0.6) and the pull-off outcome are well-determined.
-    # E=2.05 also disagrees with the 28 mm calibration (~2.75); a real material E
-    # shouldn't depend on sphere size, so treat these as an operating point, not a
-    # measured material. dt/damping/stiffnesses/caps are REF_* scaled to E by
-    # scale_for_material. (Prior E=3.8 MPa 28mm-calibration is in git history.)
+    # MATERIAL. These are an OPERATING POINT, not measured material properties:
+    # they reproduce the reference grasp behaviour, but E and the contact/damping
+    # constants are not independently identifiable from it. Do not quote E as a
+    # material measurement. dt / damping / stiffnesses / caps are REF_* values
+    # scaled to E by scale_for_material. evaluate.MATERIAL overrides the three
+    # contact constants below, so their values here are never the ones in effect.
     young = 2.05218e6
     nu = 0.40                # not 0.49: P1 triangles volumetrically lock near 0.5,
                              # over-stiffening thin members in a design-dependent way
@@ -47,9 +42,9 @@ class SimCfg:
     ramp_fraction = 0.9
     contact_stiffness = 3.90147e5   # REF 1.0e5 * r
     obstacle_stiffness = 7802.95    # REF 2.0e3 * r   (r = 3.901 stiffness ratio)
-    ipc_d_hat = 1.04097e-3          # sysid-tuned (weakly identified)
-    obstacle_friction = 0.618284    # sysid-tuned (well identified ~0.6)
-    obstacle_friction_epsv = 7.18778e-4  # sysid-tuned
+    ipc_d_hat = 1.04097e-3          # IPC barrier distance (see note above)
+    obstacle_friction = 0.618284    # Coulomb mu (see note above)
+    obstacle_friction_epsv = 7.18778e-4  # sliding-velocity regularisation
     obstacle_ccd_eta = 0.9
     newton_iter = 8
     # object-facing gripper surface = center_x - finger_width/2 = 0.084 m.
@@ -69,6 +64,11 @@ class SimCfg:
     anchor_rows = 6             # top finger rows (socket side) that must be loaded
     anchor_min_fill = 0.20      # min material fraction in that band, under the blocks
     anchor_guard = True         # set False to disable (legacy behaviour)
+    # No repair step in this release, so a design can decode into several pieces.
+    # True -> simulate only the piece attached to the socket (finger.keep_socket_
+    # component; removal only, never adds material). False -> simulate the raw mask,
+    # floating islands included.
+    drop_islands = True
     # phase time = n_steps*dt, shrinking with stiffness so n_steps stays fixed
     n_steps = 20000
     pull_n_steps = 20000
