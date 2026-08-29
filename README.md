@@ -4,6 +4,24 @@ Physics-Informed Conditional Flow Matching for the generative design of soft
 robotic gripper fingers, with quality-diversity search over the generative
 latent and grasp evaluation by a differentiable-contact FEM solver.
 
+<p align="center">
+  <img src="Figure/overview.gif"
+       alt="Pipeline overview: the 128x64 design space with its boundary conditions; conditional flow matching composing fin-ray, graph-optimised and topology-optimised features into a single design; the resulting two-finger gripper evaluated by 2D FEA von Mises stress while grasping a disc; and the 3D-printed gripper performing the same grasp in hardware.">
+  <br>
+  <em>Design space and boundary conditions &rarr; compositional flow matching over fin-ray /
+  graph-optimised / topology-optimised features &rarr; FEA grasp evaluation &rarr; hardware validation.</em>
+</p>
+
+<p align="center">
+  <img src="Figure/Overview.png"
+       alt="Method overview in five panels: (a) the 128x64 pixel design space and its boundary conditions; (b) the three source design representations - topology-optimised density fields, graph-based designs and parametric fin-ray designs; (c) compositional generative design, where a Voronoi design condition and Gaussian noise are carried by conditional flow matching into a design composed of topology-optimised, graph-based, fin-ray and unconditional features; (d) an evolutionary algorithm searching the conditions and image tokens of the flow model to fill an archive over strut thinness, branch density and material fraction; (e) four elite designs validated by FEA von Mises stress and on the 3D-printed gripper.">
+  <br>
+  <em><b>a</b> Design space and boundary conditions. <b>b</b> Source design representations:
+  topology-optimised, graph-based and fin-ray. <b>c</b> Compositional generative design by
+  conditional flow matching. <b>d</b> Evolutionary search over the model's conditions and image
+  tokens. <b>e</b> Validation of elite designs in FEA and hardware.</em>
+</p>
+
 The repository contains: training, generation, evolution and
 simulation, with no external project dependencies.
 
@@ -100,8 +118,7 @@ zero for an invalid design. Novelty dominates on purpose: the run is meant to
 illuminate the space of morphologies, not to hill-climb one grasp.
 
 **Physics.** Implicit backward-Euler PNCG with IPC log-barrier contact,
-self-collision and friction — the same solver and operating point behind the
-paper's gallery:
+self-collision and friction:
 
 | | |
 |---|---|
