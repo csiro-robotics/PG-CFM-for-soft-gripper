@@ -507,7 +507,7 @@ def test_mechanism_dataset():
     print("MechanismDataset Test Suite")
     print("=" * 60)
     
-    data_dir = "data/mechanism_dataset"
+    data_dir = "data/topopt_dataset"
     
     # Test 1: Full dataset
     print("\n--- Test 1: Full MechanismDataset ---")
@@ -610,7 +610,7 @@ def build_multi_dataset(
     Example::
 
         ds = build_multi_dataset([
-            "data/mechanism_dataset:topopt",
+            "data/topopt_dataset:topopt",
             "data/finray_dataset:finray",
         ])
 

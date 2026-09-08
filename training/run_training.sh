@@ -6,7 +6,7 @@
 # condition encoder pre-trained here and frozen (training.freeze_encoder: true),
 # so running stage 2 first would train against a randomly-initialised encoder.
 #
-#   stage 1  pretrain_encoder.py  -> $ENC_DIR/encoder_best.pt
+#   stage 1  pretrain_encoder.py  -> $ENC_DIR/condition_encoder.pt
 #   stage 2  train_picfm_dit.py   -> $OUT_DIR/<run_name>/
 #
 #   ./run_training.sh              # both stages
@@ -14,14 +14,14 @@
 #   ./run_training.sh dit          # stage 2 only (encoder must already exist)
 #
 # Data layout expected (see README):
-#   data/mechanism_dataset/  data/finray_dataset/  data/graph_dataset/
+#   data/topopt_dataset/  data/finray_dataset/  data/graph_dataset/
 # =============================================================================
 set -euo pipefail
 cd "$(dirname "$0")"
 
 # ---- paths (override from the environment) ----------------------------------
 DATA_ROOT="${DATA_ROOT:-../data}"
-ENC_DIR="${ENC_DIR:-../checkpoints/design_encoder}"
+ENC_DIR="${ENC_DIR:-../checkpoints}"
 OUT_DIR="${OUT_DIR:-../checkpoints/picfm}"
 CONFIG="${CONFIG:-configs/train_dit.yaml}"
 DEVICE="${DEVICE:-cuda}"
@@ -40,7 +40,7 @@ export PYTORCH_CUDA_ALLOC_CONF="${PYTORCH_CUDA_ALLOC_CONF:-expandable_segments:T
 export OMP_NUM_THREADS="${OMP_NUM_THREADS:-1}"
 
 DATA_DIRS=(
-  "${DATA_ROOT}/mechanism_dataset:topopt"
+  "${DATA_ROOT}/topopt_dataset:topopt"
   "${DATA_ROOT}/finray_dataset:finray"
   "${DATA_ROOT}/graph_dataset:graph"
 )
@@ -61,8 +61,8 @@ run_encoder() {
 }
 
 run_dit() {
-  local enc="${ENC_DIR}/encoder_best.pt"
-  [ -f "${enc}" ] || enc="${ENC_DIR}/encoder_final.pt"
+  local enc="${ENC_DIR}/condition_encoder.pt"
+  [ -f "${enc}" ] || enc="${ENC_DIR}/condition_encoder_final.pt"
   if [ ! -f "${enc}" ]; then
     echo "ERROR: no encoder checkpoint in ${ENC_DIR}." >&2
     echo "       Run stage 1 first:  ./run_training.sh encoder" >&2

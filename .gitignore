@@ -5,7 +5,7 @@ __pycache__/
 .venv/
 venv/
 
-# --- large assets: fetched separately, see README ---
+# --- large assets: fetched from the CSIRO Data Access Portal, see README ---
 # ignore the CONTENTS, but keep each directory's README (the fetch instructions)
 data/*
 !data/README.md

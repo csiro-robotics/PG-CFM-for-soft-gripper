@@ -35,24 +35,43 @@ evolution/    Voronoi+token genome -> CFM -> design -> implicit FEM grasp -> 3-D
 ## 1. Install
 
 ```bash
-python -m venv .venv && source .venv/bin/activate
+conda create -n picfm python=3.12 -y
+conda activate picfm
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124
 pip install -r requirements.txt
 ```
+
+Conda supplies the interpreter; the packages come from pip inside the environment.
+PyTorch no longer publishes its own conda builds, and `torchcfm`, `warp-lang`,
+`ribs` and `torchdiffeq` are pip-only — so mixing the two is deliberate, not an
+oversight. Install torch first, from the index matching your CUDA version.
 
 A CUDA GPU is required: the FEM solver runs in NVIDIA Warp and the DiT trains on GPU.
 Tested on Python 3.12 / CUDA 12.4 / RTX A5000 and H100.
 
 ## 2. Data and checkpoints
 
-Neither is tracked in git — see [`data/README.md`](data/README.md) and
-[`checkpoints/README.md`](checkpoints/README.md).
+Both published on the CSIRO Data Access Portal
+([collection `000077498v001`](https://doi.org/10.25919/j8yy-c617)). Download the
+collection and unpack it so the repository looks like this:
 
 ```
-data/mechanism_dataset/   (topopt)
-data/finray_dataset/      (finray)
-data/graph_dataset/       (graph)
+data/topopt_dataset/   3000 x data_<n>.npz   (topopt)
+data/finray_dataset/   3000 x data_<n>.npz   (finray)
+data/graph_dataset/    3000 x data_<n>.npz   (graph)
+
+checkpoints/condition_encoder.pt   stage-1 condition encoder (frozen during stage 2)
+checkpoints/picfm_dit.pt           stage-2 PI-CFM DiT; also what evolution/ decodes with
 ```
+
+Each npz holds `geometry` (128 x 64, binary), the six boundary-condition channels
+`BCx`, `BCy`, `inputx`, `inputy`, `outputx`, `outputy`, and the scalars `disp_mag`,
+`volume_fraction`, `penal`, `rmin`.
+
+With the checkpoints in place you can skip training and go straight to
+[evolution](#4-evolution). See [`data/README.md`](data/README.md) and
+[`checkpoints/README.md`](checkpoints/README.md) for the file formats and how
+to point the scripts at other paths.
 
 ## 3. Training
 
@@ -62,7 +81,7 @@ condition encoder, so stage 2 without stage 1 trains against random features.
 ```bash
 cd training
 ./run_training.sh              # both stages
-./run_training.sh encoder      # stage 1 only  -> checkpoints/design_encoder/encoder_best.pt
+./run_training.sh encoder      # stage 1 only  -> checkpoints/condition_encoder.pt
 ./run_training.sh dit          # stage 2 only  -> checkpoints/picfm/<run_name>/
 ```
 

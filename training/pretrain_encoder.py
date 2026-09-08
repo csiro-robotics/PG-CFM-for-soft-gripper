@@ -25,7 +25,7 @@ so the two streams learn independent features.
 Usage:
   python pretrain_encoder_v2.py
   python pretrain_encoder_v2.py --epochs 150 --lr 1e-3
-  python pretrain_encoder_v2.py --data_dirs data/mechanism_dataset:topopt \
+  python pretrain_encoder_v2.py --data_dirs data/topopt_dataset:topopt \
       data/finray_dataset:finray data/graph_dataset:graph
 """
 
@@ -79,11 +79,11 @@ def parse_args():
 
     # Data
     parser.add_argument("--data_dirs", type=str, nargs="+",
-                        default=["data/mechanism_dataset:topopt",
+                        default=["data/topopt_dataset:topopt",
                                  "data/finray_dataset:finray",
                                  "data/graph_dataset:graph"])
     parser.add_argument("--output_dir", type=str,
-                        default="trained_models/design_encoder")
+                        default="../checkpoints")
     parser.add_argument("--num_workers", type=int, default=2)
     parser.add_argument("--device", type=str, default="cuda")
     return parser.parse_args()
@@ -295,10 +295,10 @@ def main():
                 "epoch": epoch,
                 "ds_accuracy": ds_acc,
                 "args": vars(args),
-            }, save_dir / "encoder_best.pt")
+            }, save_dir / "condition_encoder.pt")
 
     # ---- Save final ----
-    final_path = save_dir / "encoder_final.pt"
+    final_path = save_dir / "condition_encoder_final.pt"
     torch.save({
         "encoder_state_dict": encoder.state_dict(),
         "epoch": args.epochs,

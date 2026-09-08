@@ -106,7 +106,7 @@ _YAML_KEY_MAP = {
 }
 
 _DEFAULTS = {
-    "data_dirs": None, "data_dir": "data/mechanism_dataset", "max_samples": None,
+    "data_dirs": None, "data_dir": "data/topopt_dataset", "max_samples": None,
     "hidden_dim": 384, "depth": 12, "num_heads": 6, "patch_size": 4,
     "mlp_ratio": 4.0, "num_ds": 4, "bc_channels": 6, "ds_channel_offset": 6,
     "fm_sigma": 0.0, "fm_type": "otcfm", "timestep_sampling": "uniform",
