@@ -1,5 +1,5 @@
 """
-Training utilities for PICFM-DiT.
+Training utilities for PGCFM-DiT.
 
 Separate from src/training_utils.py to avoid modifying the UNet training pipeline.
 

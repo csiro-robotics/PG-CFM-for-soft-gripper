@@ -1,6 +1,6 @@
-"""CVT-MAP-Elites over the PI-CFM genome, LM-MA-ES emitters, implicit grasp physics.
+"""CVT-MAP-Elites over the PG-CFM genome, LM-MA-ES emitters, implicit grasp physics.
 
-    genome --PI-CFM--> mask --implicit PNCG-IPC--> (score, 3 descriptors) --> archive
+    genome --PG-CFM--> mask --implicit PNCG-IPC--> (score, 3 descriptors) --> archive
 
 The archive is a 3-D CVT tessellation of the DESCRIPTOR space
 
@@ -100,7 +100,7 @@ def build_parser():
     p.add_argument("--ode-steps", type=int, default=100,
                    help="flow-ODE steps. Adaptive CFG carries a per-step EMA, so changing "
                         "this changes the generative process, not just its accuracy")
-    p.add_argument("--checkpoint", default=None, help="PI-CFM weights (default: checkpoints/picfm_dit.pt)")
+    p.add_argument("--checkpoint", default=None, help="PG-CFM weights (default: checkpoints/picfm_dit.pt)")
     # --- physics ---
     p.add_argument("--gap-mm", type=float, default=None, help="two-finger-equivalent opening")
     p.add_argument("--object-r-mm", type=float, default=None)

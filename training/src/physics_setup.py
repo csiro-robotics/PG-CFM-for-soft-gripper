@@ -1,5 +1,5 @@
 """
-Physics engine construction for PICFM training.
+Physics engine construction for PGCFM training.
 
 Two modes:
   1. setup_physics_engine()        — from a dataset .npz file (one-time setup)

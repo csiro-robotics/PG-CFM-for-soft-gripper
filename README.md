@@ -1,6 +1,6 @@
 # Beyond Representations: Flow-based Generative Design of Soft Grippers
 
-Physics-Informed Conditional Flow Matching for the generative design of soft
+Physics-Guided Conditional Flow Matching for the generative design of soft
 robotic gripper fingers, with quality-diversity search over the generative
 latent and grasp evaluation by a differentiable-contact FEM solver.
 
@@ -26,7 +26,7 @@ The repository contains: training, generation, evolution and
 simulation, with no external project dependencies.
 
 ```
-training/     stage 1 condition encoder -> stage 2 PI-CFM DiT
+training/     stage 1 condition encoder -> stage 2 PG-CFM DiT
 evolution/    Voronoi+token genome -> CFM -> design -> implicit FEM grasp -> 3-D CVT MAP-Elites
 ```
 
@@ -35,8 +35,8 @@ evolution/    Voronoi+token genome -> CFM -> design -> implicit FEM grasp -> 3-D
 ## 1. Install
 
 ```bash
-conda create -n picfm python=3.12 -y
-conda activate picfm
+conda create -n pgcfm python=3.12 -y
+conda activate pgcfm
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124
 pip install -r requirements.txt
 ```
@@ -61,7 +61,7 @@ data/finray_dataset/   3000 x data_<n>.npz   (finray)
 data/graph_dataset/    3000 x data_<n>.npz   (graph)
 
 checkpoints/condition_encoder.pt   stage-1 condition encoder (frozen during stage 2)
-checkpoints/picfm_dit.pt           stage-2 PI-CFM DiT; also what evolution/ decodes with
+checkpoints/picfm_dit.pt           stage-2 PG-CFM DiT; also what evolution/ decodes with
 ```
 
 Each npz holds `geometry` (128 x 64, binary), the six boundary-condition channels
@@ -82,13 +82,13 @@ condition encoder, so stage 2 without stage 1 trains against random features.
 cd training
 ./run_training.sh              # both stages
 ./run_training.sh encoder      # stage 1 only  -> checkpoints/condition_encoder.pt
-./run_training.sh dit          # stage 2 only  -> checkpoints/picfm/<run_name>/
+./run_training.sh dit          # stage 2 only  -> checkpoints/pgcfm/<run_name>/
 ```
 
 | stage | script | what it trains |
 |---|---|---|
 | 1 | `pretrain_encoder.py` | `SpatialStyleEncoder`: BC-CNN reconstruction + design-space classification + fusion |
-| 2 | `train_picfm_dit.py`  | Lumina-DiT flow matching with the mechanism-FEM physics loss |
+| 2 | `train_pgcfm_dit.py`  | Lumina-DiT flow matching with the mechanism-FEM physics loss |
 
 The launcher is written for a **single local desktop GPU** (no SLURM). Batch
 sizes default lower than the published run; override via the environment:
@@ -114,7 +114,7 @@ z_token   one noise value per DiT token (32 x 16), upsampled to the pixel grid -
           generator's conditioning and its noise jointly.
 ```
 
-decoded by the trained PI-CFM into a 128 x 64 binary design, then evaluated by
+decoded by the trained PG-CFM into a 128 x 64 binary design, then evaluated by
 closing one soft finger on a rigid disc and lifting it.
 
 ```bash
@@ -152,7 +152,7 @@ Everything is pinned in [`evolution/evaluate.py`](evolution/evaluate.py).
 
 ```
 evolution/
-  genome -> design      generate/   PI-CFM DiT, Voronoi rasteriser, per-token CFG
+  genome -> design      generate/   PG-CFM DiT, Voronoi rasteriser, per-token CFG
   design -> metrics     sim/        implicit PNCG-IPC solver, socket + mesh builder
   descriptors.py        the three archive axes
   evaluate.py           the pinned operating point + composite score

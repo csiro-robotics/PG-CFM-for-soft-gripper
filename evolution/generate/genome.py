@@ -4,7 +4,7 @@
 
 theta     the CONDITION. 2K Voronoi site positions (sigmoid -> [0,1]^2) followed by
           3K per-site class logits (argmax -> one-hot topopt / graph / finray). This
-          becomes a hard, pure-class Voronoi RGB image, which the PI-CFM sampler
+          becomes a hard, pure-class Voronoi RGB image, which the PG-CFM sampler
           decomposes into per-class region masks and guides on.
 
 z_token   the flow's STARTING NOISE, not a condition. One value per DiT token
@@ -15,7 +15,7 @@ z_token   the flow's STARTING NOISE, not a condition. One value per DiT token
           very similar but not identical design to the frozen-x0 path
           (thetas_to_masks): measured mask IoU 0.88 at seed 12345.
 
-Decode: theta -> Voronoi RGB -> per-class conditions -> PI-CFM flow ODE with
+Decode: theta -> Voronoi RGB -> per-class conditions -> PG-CFM flow ODE with
 per-token adaptive CFG -> threshold at 0.5 -> binary mask.
 
 NO REPAIR STEP. The research pipeline post-processed every design with an NV-loop
@@ -53,7 +53,7 @@ DEFAULT_BC = str(Path(__file__).resolve().parent / "assets" / "bc_data_00000.npz
 def _resolve_ckpt(path):
     """Resolve a checkpoint path against the repo root and fail loudly if absent.
 
-    The trained PI-CFM weights are not distributed with the source; see
+    The trained PG-CFM weights are not distributed with the source; see
     checkpoints/README.md for how to obtain or retrain them (training/)."""
     p = Path(path)
     if not p.is_absolute():
@@ -62,7 +62,7 @@ def _resolve_ckpt(path):
         p = p if p.exists() else ROOT / p
     if not p.exists():
         raise FileNotFoundError(
-            f"PI-CFM checkpoint not found: {p}\n"
+            f"PG-CFM checkpoint not found: {p}\n"
             f"  Put the trained DiT weights there, or pass --checkpoint /path/to/weights.pt\n"
             f"  See checkpoints/README.md; training/run_training.sh reproduces them.")
     return str(p)
@@ -93,7 +93,7 @@ def theta_to_rgb(theta: np.ndarray, K: int, H: int, W: int) -> np.ndarray:
 
 @torch.no_grad()
 def generate_mask(gen, rgb_u8, x0_seed, H, W) -> np.ndarray:
-    """RGB -> PI-CFM (frozen x0) -> threshold -> (H,W) binary mask. No repair."""
+    """RGB -> PG-CFM (frozen x0) -> threshold -> (H,W) binary mask. No repair."""
     conds, masks, _, _ = voronoi_regions(gen, rgb_u8)
     x, _, _ = sample_adaptive_v2(gen, conds, masks, 100, x0_seed, H, W,
                                  1.0, 4.0, 2.0, 0.8, 0.3, 0.7)

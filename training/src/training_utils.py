@@ -1,5 +1,5 @@
 """
-Training utilities for PICFM.
+Training utilities for PGCFM.
 
 EMA, learning-rate schedules, Euler ODE sampling, and visualisation helpers.
 """

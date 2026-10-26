@@ -1,5 +1,5 @@
 # =============================================================================
-# PICFM Training — Lumina-DiT-S/4 + SpatialStyleEncoder v2
+# PGCFM Training — Lumina-DiT-S/4 + SpatialStyleEncoder v2
 # =============================================================================
 # Architecture:
 #   DiT: Lumina-T2I Transformer (RMSNorm, SwiGLU, RoPE, QK-Norm, tanh-gated cross-attn)
@@ -8,7 +8,7 @@
 #   CFG: learned null tokens
 #
 # Usage:
-#   python train_picfm_dit.py --config configs/train_dit.yaml
+#   python train_pgcfm_dit.py --config configs/train_dit.yaml
 
 # ---- Data -------------------------------------------------------------------
 data:
@@ -77,7 +77,7 @@ logging:
   n_sample_vis: 4
 
 output:
-  output_dir: ../checkpoints/picfm
+  output_dir: ../checkpoints/pgcfm
   run_name: run_dit_v2
   num_workers: 4
   wandb: false

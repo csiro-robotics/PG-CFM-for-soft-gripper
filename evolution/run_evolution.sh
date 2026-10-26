@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# CVT-MAP-Elites over the PI-CFM genome — LOCAL DESKTOP (single GPU).
+# CVT-MAP-Elites over the PG-CFM genome — LOCAL DESKTOP (single GPU).
 # =============================================================================
 # Reproduces the paper's search configuration: LM-MA-ES emitters, 64 x 32 = 2048
 # designs per iteration, a 3-D CVT over
@@ -17,7 +17,7 @@
 #   ./run_evolution.sh smoke            # 2 tiny iterations, end-to-end check
 #   ITERATIONS=50 ./run_evolution.sh    # a short run
 #
-# Requires the trained PI-CFM weights at ../checkpoints/picfm_dit.pt
+# Requires the trained PG-CFM weights at ../checkpoints/picfm_dit.pt
 # (see ../checkpoints/README.md, or train them with ../training/run_training.sh).
 # =============================================================================
 set -euo pipefail
@@ -43,7 +43,7 @@ export PYTORCH_CUDA_ALLOC_CONF="${PYTORCH_CUDA_ALLOC_CONF:-expandable_segments:T
 export OMP_NUM_THREADS="${OMP_NUM_THREADS:-1}"
 
 if [ ! -f "${CHECKPOINT}" ]; then
-  echo "ERROR: no PI-CFM checkpoint at ${CHECKPOINT}." >&2
+  echo "ERROR: no PG-CFM checkpoint at ${CHECKPOINT}." >&2
   echo "       See ../checkpoints/README.md, or train one:" >&2
   echo "         cd ../training && ./run_training.sh" >&2
   exit 1

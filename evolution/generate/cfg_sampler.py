@@ -1,4 +1,4 @@
-"""Per-token dynamic classifier-free guidance for the PI-CFM DiT sampler.
+"""Per-token dynamic classifier-free guidance for the PG-CFM DiT sampler.
 
 The DiT uses patch_size=4 on a 128x64 grid -> 32x16 = 512 tokens, and each token
 carries its own CFG schedule s_token(t):

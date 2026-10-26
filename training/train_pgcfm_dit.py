@@ -1,5 +1,5 @@
 """
-PICFM-DiT Training Script.
+PGCFM-DiT Training Script.
 
 Single-stage training of a Lumina-architecture DiT with SpatialStyleEncoder v2
 for conditional flow matching on topology optimization.
@@ -10,8 +10,8 @@ for conditional flow matching on topology optimization.
   CFG:      Learned null tokens with per-sample dropout
 
 Usage:
-    python train_picfm_DiT.py --config configs/train_dit.yaml
-    python train_picfm_DiT.py --config configs/train_dit.yaml --batch_size 64
+    python train_pgcfm_dit.py --config configs/train_dit.yaml
+    python train_pgcfm_dit.py --config configs/train_dit.yaml --batch_size 64
 """
 
 import os
@@ -124,7 +124,7 @@ _DEFAULTS = {
     "log_freq": 20, "eval_freq": 500,
     "sample_freq": 5000, "save_freq": 10000,
     "n_ode_steps": 100, "n_sample_vis": 4,
-    "output_dir": "./trained_models/picfm", "run_name": "run_dit",
+    "output_dir": "./trained_models/pgcfm", "run_name": "run_dit",
     "resume": None, "num_workers": 4, "wandb": False,
 }
 
@@ -214,7 +214,7 @@ def main():
     log_fn = lambda d, step: None
     if args.wandb:
         import wandb
-        wandb.init(project="picfm_topop", name=args.run_name, config=vars(args))
+        wandb.init(project="pgcfm_topop", name=args.run_name, config=vars(args))
         log_fn = lambda d, step: wandb.log(d, step=step)
 
     # ------------------------------------------------------------------

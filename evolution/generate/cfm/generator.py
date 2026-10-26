@@ -1,7 +1,7 @@
 """
 CFM Design Generator
 
-A self-contained generator class that loads a trained PICFM checkpoint,
+A self-contained generator class that loads a trained PGCFM checkpoint,
 reads boundary conditions from a source npz file, generates design
 samples, and optionally saves them as npz / mesh files into a
 ``validation/gen_XXXXX/`` directory structure.

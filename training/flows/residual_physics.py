@@ -1,7 +1,7 @@
 """
 Residual Physics Engine for Mechanism Design Flow Matching
 
-Provides physics-informed loss computation and validation metrics for
+Provides physics-guided loss computation and validation metrics for
 training a conditional flow matching model that generates mechanism
 topology designs.
 
@@ -92,7 +92,7 @@ def check_floating_material(density: torch.Tensor, threshold: float = 0.5) -> bo
 
 class ResidualMechanics(nn.Module):
     """
-    Physics-informed loss & metric computation for mechanism topology design.
+    Physics-guided loss & metric computation for mechanism topology design.
 
     Uses **displacement-controlled input + fixed output** (reaction-force)
     formulation.  The dataset convention stores prescribed displacement
@@ -256,7 +256,7 @@ class ResidualMechanics(nn.Module):
         sigma: Optional[torch.Tensor] = None,
     ) -> Dict[str, torch.Tensor]:
         """
-        Compute physics-informed training losses using displacement-controlled FEM.
+        Compute physics-guided training losses using displacement-controlled FEM.
 
         Parameters
         ----------

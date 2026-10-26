@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # =============================================================================
-# PI-CFM training — LOCAL DESKTOP (single GPU). No SLURM, no module load.
+# PG-CFM training — LOCAL DESKTOP (single GPU). No SLURM, no module load.
 # =============================================================================
 # Two stages, in order. Stage 2 REQUIRES stage 1: the DiT is trained with the
 # condition encoder pre-trained here and frozen (training.freeze_encoder: true),
 # so running stage 2 first would train against a randomly-initialised encoder.
 #
 #   stage 1  pretrain_encoder.py  -> $ENC_DIR/condition_encoder.pt
-#   stage 2  train_picfm_dit.py   -> $OUT_DIR/<run_name>/
+#   stage 2  train_pgcfm_dit.py   -> $OUT_DIR/<run_name>/
 #
 #   ./run_training.sh              # both stages
 #   ./run_training.sh encoder      # stage 1 only
@@ -22,7 +22,7 @@ cd "$(dirname "$0")"
 # ---- paths (override from the environment) ----------------------------------
 DATA_ROOT="${DATA_ROOT:-../data}"
 ENC_DIR="${ENC_DIR:-../checkpoints}"
-OUT_DIR="${OUT_DIR:-../checkpoints/picfm}"
+OUT_DIR="${OUT_DIR:-../checkpoints/pgcfm}"
 CONFIG="${CONFIG:-configs/train_dit.yaml}"
 DEVICE="${DEVICE:-cuda}"
 
@@ -69,12 +69,12 @@ run_dit() {
     exit 1
   fi
   echo "=============================================================="
-  echo " STAGE 2/2  PI-CFM DiT  (encoder: ${enc})  ->  ${OUT_DIR}"
+  echo " STAGE 2/2  PG-CFM DiT  (encoder: ${enc})  ->  ${OUT_DIR}"
   echo "=============================================================="
   mkdir -p "${OUT_DIR}"
   local extra=()
   [ -n "${DIT_STEPS}" ] && extra+=(--total_steps "${DIT_STEPS}")
-  python train_picfm_dit.py \
+  python train_pgcfm_dit.py \
       --config "${CONFIG}" \
       --data_dirs "${DATA_DIRS[@]}" \
       --pretrained_encoder "${enc}" \

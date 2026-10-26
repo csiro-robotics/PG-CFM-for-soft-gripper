@@ -1,7 +1,7 @@
 """
 Diffusion Transformer (DiT) for Flow Matching.
 
-Based on Lumina-T2I (Flag-DiT / Alpha-VLLM, 2024), adapted for PICFM
+Based on Lumina-T2I (Flag-DiT / Alpha-VLLM, 2024), adapted for PGCFM
 topology optimization with SpatialStyleEncoder (v2).
 
 Architecture (Lumina-T2I):

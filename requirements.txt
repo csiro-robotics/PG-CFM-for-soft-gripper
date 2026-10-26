@@ -1,4 +1,4 @@
-# PI-CFM for soft grippers — runtime dependencies
+# PG-CFM for soft grippers — runtime dependencies
 # Tested with Python 3.12, CUDA 12.4, NVIDIA RTX A5000 / H100
 #
 # Install PyTorch first, matching your CUDA version:
@@ -35,5 +35,5 @@ imageio>=2.9
 #   is a DIFFERENT loss from the one the released model was trained with -- install
 #   it if you retrain.
 opencv-python-headless>=4.10
-# wandb: only imported when train_picfm_dit.py is given --wandb.
+# wandb: only imported when train_pgcfm_dit.py is given --wandb.
 # wandb>=0.17
