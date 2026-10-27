@@ -6,10 +6,11 @@ latent and grasp evaluation by a differentiable-contact FEM solver.
 
 <p align="center">
   <img src="Figure/overview.gif"
-       alt="Pipeline overview: the 128x64 design space with its boundary conditions; conditional flow matching composing fin-ray, graph-optimised and topology-optimised features into a single design; the resulting two-finger gripper evaluated by 2D FEA von Mises stress while grasping a disc; and the 3D-printed gripper performing the same grasp in hardware.">
+       alt="Pipeline overview: the 128x64 design space with its boundary conditions, partitioned by a Voronoi condition into regions assigned to fin-ray, graph-optimised and topology-optimised features; conditional flow matching composing those features into a single design; the resulting two-finger gripper evaluated by 2D FEA von Mises stress while grasping a disc; mechanical features found in generated designs, such as intricate locking and buckling springs; and the 3D-printed gripper performing the grasp in hardware alongside its FEA.">
   <br>
-  <em>Design space and boundary conditions &rarr; compositional flow matching over fin-ray /
-  graph-optimised / topology-optimised features &rarr; FEA grasp evaluation &rarr; hardware validation.</em>
+  <em>Design space and Voronoi condition &rarr; compositional flow matching over fin-ray /
+  graph-optimised / topology-optimised features &rarr; FEA grasp evaluation &rarr; mechanical
+  features (intricate locking, buckling spring) &rarr; hardware validation.</em>
 </p>
 
 <p align="center">
